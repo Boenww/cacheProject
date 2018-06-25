@@ -12,12 +12,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-//
-// Student Information
-//
-extern const char *studentName;
-extern const char *studentID;
-extern const char *email;
 
 //------------------------------------//
 //          Global Defines            //

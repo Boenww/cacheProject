@@ -12,13 +12,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-//
-// TODO:Student Information
-//
-const char *studentName = "Bowen Zhang";
-const char *studentID   = "";
-const char *email       = "";
-
 //------------------------------------//
 //        Cache Configuration         //
 //------------------------------------//
@@ -59,9 +52,6 @@ uint64_t l2cachePenalties; // L2$ penalties
 //        Cache Data Structures       //
 //------------------------------------//
 
-//
-//TODO: Add your Cache data structures here
-//
 Cache *icache, *dcache, *l2cache;
 
 //------------------------------------//
@@ -98,7 +88,6 @@ init_general_cache(uint32_t cacheSets, uint32_t cacheAssoc, uint32_t hitTime, ui
 void
 init_cache()
 {
-    // Initialize cache stats
     icacheRefs        = 0;
     icacheMisses      = 0;
     icachePenalties   = 0;
@@ -109,9 +98,6 @@ init_cache()
     l2cacheMisses     = 0;
     l2cachePenalties  = 0;
     
-    //
-    //TODO: Initialize Cache Simulator Data Structures
-    //
     if (icacheSets) {icache = init_general_cache(icacheSets, icacheAssoc, icacheHitTime, L1CACHE);}
     if (dcacheSets) {dcache = init_general_cache(dcacheSets, dcacheAssoc, dcacheHitTime, L1CACHE);}
     if (l2cacheSets) {l2cache = init_general_cache(l2cacheSets, l2cacheAssoc, l2cacheHitTime, L2CACHE);}
@@ -225,9 +211,6 @@ update_lru(uint32_t addr, Cache *cache)
 uint32_t
 icache_access(uint32_t addr)
 {
-    //
-    //TODO: Implement I$
-    //
     if (icacheSets == 0) {
         return l2cache_access(addr, ICACHE);
     } else {
@@ -252,9 +235,6 @@ icache_access(uint32_t addr)
 uint32_t
 dcache_access(uint32_t addr)
 {
-    //
-    //TODO: Implement D$
-    //
     if (dcacheSets == 0) {
         return l2cache_access(addr, DCACHE);
     } else {
@@ -277,9 +257,6 @@ dcache_access(uint32_t addr)
 uint32_t
 l2cache_access(uint32_t addr, uint8_t i_or_d)
 {
-    //
-    //TODO: Implement L2$
-    //
     if (l2cacheSets == 0) {
         return memspeed;
     } else {
