@@ -26,6 +26,12 @@ extern const char *email;
 #define TRUE 1
 #define FALSE 0
 
+#define ICACHE 0
+#define DCACHE 1
+
+#define L1CACHE 0
+#define L2CACHE 1
+
 //------------------------------------//
 //        Cache Configuration         //
 //------------------------------------//
@@ -62,13 +68,38 @@ extern uint64_t l2cacheRefs;      // L2$ references
 extern uint64_t l2cacheMisses;    // L2$ misses
 extern uint64_t l2cachePenalties; // L2$ penalties
 
+typedef struct Block_t {
+    uint8_t valid;
+    uint32_t lru;
+    uint32_t tag;
+    uint32_t index;
+    uint32_t offset;
+} Block;
+
+typedef struct Cache_t {
+    uint32_t setNum;
+    uint32_t assoc;
+    uint32_t hitTime;
+    uint32_t blocksize;
+    Block **blocks;
+    uint8_t hierarchy;
+} Cache;
 //------------------------------------//
 //      Cache Function Prototypes     //
 //------------------------------------//
 
 // Initialize the predictor
 //
-void init_cache();
+Cache *init_general_cache(uint32_t cacheSets, uint32_t cacheAssoc, uint32_t hitTime, uint8_t hierarchy);
+void init_cache(void);
+
+uint32_t get_index(uint32_t addr, Cache cache);
+uint32_t get_tag(uint32_t addr, Cache cache);
+uint32_t get_addr(uint32_t setIndex, uint32_t blockIndex, Cache cache);
+
+uint8_t hit_miss(uint32_t addr, Cache *cache);
+void inclusive_helper(uint32_t addr, Cache *cache);
+void update_lru(uint32_t addr, Cache *cache);
 
 // Perform a memory access through the icache interface for the address 'addr'
 // Return the access time for the memory operation
@@ -83,6 +114,10 @@ uint32_t dcache_access(uint32_t addr);
 // Perform a memory access to the l2cache for the address 'addr'
 // Return the access time for the memory operation
 //
-uint32_t l2cache_access(uint32_t addr);
+uint32_t l2cache_access(uint32_t addr, uint8_t l1);
+
+// Free memory
+//
+void free_cache(void);
 
 #endif
